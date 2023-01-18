@@ -37,15 +37,17 @@ class EXPRESSIBILITY_1NORM:
 
     def ALT(self, circuit, params):
         for i in range(self.nqubits):
-            circuit.rx(params[i], i)
-            circuit.ry(params[i + self.nqubits], i)
+            circuit.ry(params[i], i)
 
         if self.count % 2 == 0:
             for i in range(self.nqubits//2):
-                circuit.cx(2*i, 2*i+1)
+                circuit.cz(2*i, 2*i+1)
         else:
             for i in range(self.nqubits//2-1):
-                circuit.cx(2*i+1, 2*(i+1)%self.nqubits)
+                circuit.cz(2*i+1, 2*(i+1)%self.nqubits)
+
+        for i in range(self.nqubits):
+            circuit.ry(params[i + self.nqubits], i)
 
     def generate_circuit_state(self, params):
         circuit = QuantumCircuit(self.nqubits)
@@ -130,15 +132,17 @@ class EXPRESSIBILITY_2NORM:
 
     def ALT(self, circuit, params):
         for i in range(self.nqubits):
-            circuit.rx(params[i], i)
-            circuit.ry(params[i + self.nqubits], i)
+            circuit.ry(params[i], i)
 
         if self.count % 2 == 0:
             for i in range(self.nqubits//2):
-                circuit.cx(2*i, 2*i+1)
+                circuit.cz(2*i, 2*i+1)
         else:
             for i in range(self.nqubits//2-1):
-                circuit.cx(2*i+1, 2*(i+1)%self.nqubits)
+                circuit.cz(2*i+1, 2*(i+1)%self.nqubits)
+
+        for i in range(self.nqubits):
+            circuit.ry(params[i + self.nqubits], i)
 
     def generate_circuit_state(self, params):
         circuit = QuantumCircuit(self.nqubits)
