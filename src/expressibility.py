@@ -8,17 +8,18 @@ def analytical_haar_frame_potential(nqubits):
     return 1/(2**(nqubits-1) * (2**nqubits + 1))
 
 
-class EXPRESSIBILITY_1NORM:
-    def __init__(self, circuit_type, nqubits, nlayers, nsamples):
+class GenerateCircuit:
+    def __init__(self, circuit_type, nqubits, nlayers):
         self.circuit_type = circuit_type
         self.nqubits = nqubits
         self.nlayers = nlayers
-        self.nsamples = nsamples
+        self.count = 0
 
     def TPA(self, circuit, params):
         for i in range(self.nqubits):
             circuit.rx(params[i], i)
             circuit.ry(params[i], i)
+        circuit.barrier()
 
     def HEA(self, circuit, params):
         for i in range(self.nqubits):
@@ -26,6 +27,7 @@ class EXPRESSIBILITY_1NORM:
             circuit.ry(params[i + self.nqubits], i)
         for i in range(self.nqubits-1):
             circuit.cx(i, i+1)
+        circuit.barrier()
 
     def HEA2(self, circuit, params):
         for i in range(self.nqubits):
@@ -33,40 +35,73 @@ class EXPRESSIBILITY_1NORM:
             circuit.ry(params[i], i)
         for i in range(self.nqubits//2):
             circuit.cx(2*i, 2*i+1)
-        for i in range(self.nqubits//2-1):
-            circuit.cx(2*i+1, 2*(i+1)%self.nqubits)
+        if self.nqubits % 2 == 0:
+            for i in range(self.nqubits//2-1):
+                circuit.cx(2*i+1, 2*(i+1))
+        else:
+            for i in range(self.nqubits//2):
+                circuit.cx(2*i+1, 2*(i+1))
+        circuit.barrier()
 
     def ALT(self, circuit, params):
-        for i in range(self.nqubits):
-            circuit.rx(params[i], i)
-            circuit.ry(params[i], i)
         if self.count % 2 == 0:
             for i in range(self.nqubits//2):
+                circuit.rx(params[i], 2*i)
+                circuit.ry(params[i], 2*i)
+                circuit.rx(params[i], 2*i+1)
+                circuit.ry(params[i], 2*i+1)
                 circuit.cz(2*i, 2*i+1)
+            circuit.barrier()
         else:
-            for i in range(self.nqubits//2-1):
-                circuit.cz(2*i+1, 2*(i+1)%self.nqubits)
+            if self.nqubits % 2 == 0:
+                for i in range(self.nqubits//2-1):
+                    circuit.rx(params[i], 2*i+1)
+                    circuit.ry(params[i], 2*i+1)
+                    circuit.rx(params[i], 2*(i+1))
+                    circuit.ry(params[i], 2*(i+1))
+                    circuit.cz(2*i+1, 2*(i+1))
+                circuit.barrier()
+            else:
+                for i in range(self.nqubits//2):
+                    circuit.rx(params[i], 2*i+1)
+                    circuit.ry(params[i], 2*i+1)
+                    circuit.rx(params[i], 2*(i+1))
+                    circuit.ry(params[i], 2*(i+1))
+                    circuit.cz(2*i+1, 2*(i+1))
+                circuit.barrier()
 
-    def generate_circuit_state(self, params):
-        circuit = QuantumCircuit(self.nqubits)
+    def generate_circuit(self, params):
+        self.circuit = QuantumCircuit(self.nqubits)
 
         if self.circuit_type == 'TPA':
             for i in range(self.nlayers):
-                self.TPA(circuit, params[2*self.nqubits*i:2*self.nqubits*(i+1)])
+                self.TPA(self.circuit, params[2*self.nqubits*i:2*self.nqubits*(i+1)])
         elif self.circuit_type == 'HEA':
             for i in range(self.nlayers):
-                self.HEA(circuit, params[ 2*self.nqubits*i : 2*self.nqubits*(i+1) ])
+                self.HEA(self.circuit, params[ 2*self.nqubits*i : 2*self.nqubits*(i+1) ])
         elif self.circuit_type == 'HEA2':
             for i in range(self.nlayers):
-                self.HEA2(circuit, params[ 2*self.nqubits*i : 2*self.nqubits*(i+1) ])
+                self.HEA2(self.circuit, params[ 2*self.nqubits*i : 2*self.nqubits*(i+1) ])
         elif self.circuit_type == 'ALT':
-            self.count = 0
             for i in range(self.nlayers):
-                self.ALT(circuit, params[ 2*self.nqubits*i : 2*self.nqubits*(i+1) ])
+                self.ALT(self.circuit, params[ 2*self.nqubits*i : 2*self.nqubits*(i+1) ])
                 self.count += 1
         else:
             raise ValueError('Invalid circuit type.')
 
+        return self.circuit
+
+
+class EXPRESSIBILITY_1NORM:
+    def __init__(self, circuit_type, nqubits, nlayers, nsamples):
+        self.circuit_type = circuit_type
+        self.nqubits = nqubits
+        self.nlayers = nlayers
+        self.nsamples = nsamples
+        self.count = 0
+
+    def generate_circuit_state(self, params):
+        circuit = GenerateCircuit(self.circuit_type, self.nqubits, self.nlayers).generate_circuit(params)
         rho = qi.DensityMatrix.from_instruction(circuit)
         return rho
 
@@ -112,57 +147,8 @@ class EXPRESSIBILITY_2NORM:
         self.nsamples = nsamples
         self.count = 0
 
-    def TPA(self, circuit, params):
-        for i in range(self.nqubits):
-            circuit.rx(params[i], i)
-            circuit.ry(params[i], i)
-
-    def HEA(self, circuit, params):
-        for i in range(self.nqubits):
-            circuit.rx(params[i], i)
-            circuit.ry(params[i + self.nqubits], i)
-        for i in range(self.nqubits-1):
-            circuit.cx(i, i+1)
-
-    def HEA2(self, circuit, params):
-        for i in range(self.nqubits):
-            circuit.rx(params[i], i)
-            circuit.ry(params[i], i)
-        for i in range(self.nqubits//2):
-            circuit.cx(2*i, 2*i+1)
-        for i in range(self.nqubits//2-1):
-            circuit.cx(2*i+1, 2*(i+1)%self.nqubits)
-
-    def ALT(self, circuit, params):
-        for i in range(self.nqubits):
-            circuit.rx(params[i], i)
-            circuit.ry(params[i], i)
-        if self.count % 2 == 0:
-            for i in range(self.nqubits//2):
-                circuit.cz(2*i, 2*i+1)
-        else:
-            for i in range(self.nqubits//2-1):
-                circuit.cz(2*i+1, 2*(i+1)%self.nqubits)
-
     def generate_circuit_state(self, params):
-        circuit = QuantumCircuit(self.nqubits)
-
-        if self.circuit_type == 'TPA':
-            for i in range(self.nlayers):
-                self.TPA(circuit, params[2*self.nqubits*i:2*self.nqubits*(i+1)])
-        elif self.circuit_type == 'HEA':
-            for i in range(self.nlayers):
-                self.HEA(circuit, params[ 2*self.nqubits*i : 2*self.nqubits*(i+1) ])
-        elif self.circuit_type == 'HEA2':
-            for i in range(self.nlayers):
-                self.HEA2(circuit, params[ 2*self.nqubits*i : 2*self.nqubits*(i+1) ])
-        elif self.circuit_type == 'ALT':
-            for i in range(self.nlayers):
-                self.ALT(circuit, params[ 2*self.nqubits*i : 2*self.nqubits*(i+1) ])
-                self.count += 1
-        else:
-            raise ValueError('Invalid circuit type.')
-
+        circuit = GenerateCircuit(self.circuit_type, self.nqubits, self.nlayers).generate_circuit(params)
         state = qi.Statevector.from_instruction(circuit)
         return state
 
