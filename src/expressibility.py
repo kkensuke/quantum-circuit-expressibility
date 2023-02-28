@@ -98,7 +98,6 @@ class EXPRESSIBILITY_1NORM:
         self.nqubits = nqubits
         self.nlayers = nlayers
         self.nsamples = nsamples
-        self.count = 0
 
     def generate_circuit_state(self, params):
         circuit = GenerateCircuit(self.circuit_type, self.nqubits, self.nlayers).generate_circuit(params)
@@ -145,7 +144,6 @@ class EXPRESSIBILITY_2NORM:
         self.nqubits = nqubits
         self.nlayers = nlayers
         self.nsamples = nsamples
-        self.count = 0
 
     def generate_circuit_state(self, params):
         circuit = GenerateCircuit(self.circuit_type, self.nqubits, self.nlayers).generate_circuit(params)
