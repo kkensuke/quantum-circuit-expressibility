@@ -92,15 +92,13 @@ class GenerateCircuit:
         return self.circuit
 
 
-class EXPRESSIBILITY_1NORM:
+class EXPRESSIBILITY_1NORM(GenerateCircuit):
     def __init__(self, circuit_type, nqubits, nlayers, nsamples):
-        self.circuit_type = circuit_type
-        self.nqubits = nqubits
-        self.nlayers = nlayers
+        GenerateCircuit.__init__(self, circuit_type, nqubits, nlayers)
         self.nsamples = nsamples
 
     def generate_circuit_state(self, params):
-        circuit = GenerateCircuit(self.circuit_type, self.nqubits, self.nlayers).generate_circuit(params)
+        circuit = self.generate_circuit(params)
         rho = qi.DensityMatrix.from_instruction(circuit)
         return rho
 
@@ -138,15 +136,13 @@ class EXPRESSIBILITY_1NORM:
         return expressibility_1norm
 
 
-class EXPRESSIBILITY_2NORM:
+class EXPRESSIBILITY_2NORM(GenerateCircuit):
     def __init__(self, circuit_type, nqubits, nlayers, nsamples):
-        self.circuit_type = circuit_type
-        self.nqubits = nqubits
-        self.nlayers = nlayers
+        GenerateCircuit.__init__(self, circuit_type, nqubits, nlayers)
         self.nsamples = nsamples
 
     def generate_circuit_state(self, params):
-        circuit = GenerateCircuit(self.circuit_type, self.nqubits, self.nlayers).generate_circuit(params)
+        circuit = self.generate_circuit(params)
         state = qi.Statevector.from_instruction(circuit)
         return state
 
