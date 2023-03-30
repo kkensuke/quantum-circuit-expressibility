@@ -92,7 +92,7 @@ class GenerateCircuit:
         return self.circuit
 
 
-class EXPRESSIBILITY_1NORM(GenerateCircuit):
+class Expressibility1norm(GenerateCircuit):
     def __init__(self, circuit_type, nqubits, nlayers, nsamples):
         GenerateCircuit.__init__(self, circuit_type, nqubits, nlayers)
         self.nsamples = nsamples
@@ -130,13 +130,13 @@ class EXPRESSIBILITY_1NORM(GenerateCircuit):
 
         haar_integral = self.generate_haar_integral()
 
-        expressibility_1norm = np.linalg.norm(haar_integral - rho_integral, 'nuc')
+        expressibility_ = np.linalg.norm(haar_integral - rho_integral, 'nuc')
         # 'nuc' for 1-norm, 'fro' for 2-norm
 
-        return expressibility_1norm
+        return expressibility_
 
 
-class EXPRESSIBILITY_2NORM(GenerateCircuit):
+class Expressibility2norm(GenerateCircuit):
     def __init__(self, circuit_type, nqubits, nlayers, nsamples):
         GenerateCircuit.__init__(self, circuit_type, nqubits, nlayers)
         self.nsamples = nsamples

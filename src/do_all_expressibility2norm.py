@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from qiskit import QuantumCircuit
 import qiskit.quantum_info as qi
 
-from .expressibility import analytical_haar_frame_potential, EXPRESSIBILITY_2NORM
+from .expressibility import analytical_haar_frame_potential, Expressibility2norm
 
 class do_all:
     def __init__(self, circuit_types, nqubits_list, nlayers_list, nsamples):
@@ -20,7 +20,7 @@ class do_all:
             for nqubits in self.nqubits_list:
                 frame_potential_samples_each_nlayers = []
                 for nlayers in self.nlayers_list:
-                    exp = EXPRESSIBILITY_2NORM(circuit_type, nqubits, nlayers, self.nsamples)
+                    exp = Expressibility2norm(circuit_type, nqubits, nlayers, self.nsamples)
                     frame_potential_samples_each_nlayers.append(exp.circuit_frame_potential())
                 frame_potential_samples_each_nqubits.append(frame_potential_samples_each_nlayers)
             self.frame_potential_samples_each_circuit_type.append(frame_potential_samples_each_nqubits)
