@@ -6,6 +6,7 @@ import qiskit.quantum_info as qi
 
 from .expressibility import analytical_haar_frame_potential, Expressibility2norm
 
+
 class do_all:
     def __init__(self, circuit_types, nqubits_list, nlayers_list, nsamples):
         self.circuit_types = circuit_types

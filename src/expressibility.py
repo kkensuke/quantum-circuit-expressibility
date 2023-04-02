@@ -94,7 +94,7 @@ class GenerateCircuit:
 
 class Expressibility1norm(GenerateCircuit):
     def __init__(self, circuit_type, nqubits, nlayers, nsamples):
-        GenerateCircuit.__init__(self, circuit_type, nqubits, nlayers)
+        super().__init__(circuit_type, nqubits, nlayers)
         self.nsamples = nsamples
 
     def generate_circuit_state(self, params):
@@ -138,7 +138,7 @@ class Expressibility1norm(GenerateCircuit):
 
 class Expressibility2norm(GenerateCircuit):
     def __init__(self, circuit_type, nqubits, nlayers, nsamples):
-        GenerateCircuit.__init__(self, circuit_type, nqubits, nlayers)
+        super().__init__(circuit_type, nqubits, nlayers)
         self.nsamples = nsamples
 
     def generate_circuit_state(self, params):
