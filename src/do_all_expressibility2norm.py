@@ -1,10 +1,8 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-from qiskit import QuantumCircuit
-import qiskit.quantum_info as qi
-
-from .expressibility import analytical_haar_frame_potential, Expressibility2norm
+from .expressibility import (Expressibility2norm,
+                             analytical_haar_frame_potential)
 
 
 class do_all:
@@ -65,7 +63,7 @@ class do_all:
         plt.semilogy(
             self.nlayers_list,
             self.frame_potential_analytical_samples_each_nqubits[-1],
-            label=f"analytical haar frame potential",
+            label="analytical haar frame potential",
             linestyle="dashed",
             color="black",
         )
