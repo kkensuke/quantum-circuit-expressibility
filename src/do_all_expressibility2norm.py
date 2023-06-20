@@ -47,22 +47,22 @@ class do_all:
         # plot frame potential vs nlayers
         for i in range(len(self.nqubits_list)):
             plt.semilogy(
-                self.nlayers_list,
-                frame_potential_samples_each_nqubits[i],
+                x=self.nlayers_list,
+                y=frame_potential_samples_each_nqubits[i],
                 label=f"circuit frame potential, nqubits={self.nqubits_list[i]}",
                 marker="o",
             )
 
         for i in range(len(self.nqubits_list) - 1):
             plt.semilogy(
-                self.nlayers_list,
-                self.frame_potential_analytical_samples_each_nqubits[i],
+                x=self.nlayers_list,
+                y=self.frame_potential_analytical_samples_each_nqubits[i],
                 linestyle="dashed",
                 color="black",
             )
         plt.semilogy(
-            self.nlayers_list,
-            self.frame_potential_analytical_samples_each_nqubits[-1],
+            x=self.nlayers_list,
+            y=self.frame_potential_analytical_samples_each_nqubits[-1],
             label="analytical haar frame potential",
             linestyle="dashed",
             color="black",
@@ -70,12 +70,7 @@ class do_all:
 
         plt.xlabel("nlayers")
         plt.ylabel("frame potential")
-        plt.legend(
-            bbox_to_anchor=(1.02, 1),
-            loc="upper left",
-            borderaxespad=0,
-            fontsize=10,
-        )
+        plt.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0, fontsize=10)
         plt.show()
 
         # plot expressibility vs nlayers
@@ -87,18 +82,13 @@ class do_all:
             )
             expressibility_each_nqubits.append(expressibility_each_nlayers)
             plt.semilogy(
-                self.nlayers_list,
-                expressibility_each_nlayers,
+                x=self.nlayers_list,
+                y=expressibility_each_nlayers,
                 label=f"circuit expressibility, nqubits={self.nqubits_list[i]}",
                 marker="o",
             )
 
         plt.xlabel("nlayers")
         plt.ylabel("expressibility")
-        plt.legend(
-            bbox_to_anchor=(1.02, 1),
-            loc="upper left",
-            borderaxespad=0,
-            fontsize=10,
-        )
+        plt.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0, fontsize=10)
         plt.show()
