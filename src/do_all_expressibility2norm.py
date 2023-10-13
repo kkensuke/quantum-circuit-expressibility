@@ -45,25 +45,26 @@ class do_all:
         frame_potential_samples_each_nqubits = self.frame_potential_samples_each_circuit_type[l[circuit_type]]
 
         # plot frame potential vs nlayers
+        print(self.nlayers_list)
         for i in range(len(self.nqubits_list)):
             plt.semilogy(
-                x=self.nlayers_list,
-                y=frame_potential_samples_each_nqubits[i],
-                label=f"circuit frame potential, nqubits={self.nqubits_list[i]}",
+                self.nlayers_list,
+                frame_potential_samples_each_nqubits[i],
+                label=f"nqubits={self.nqubits_list[i]}",
                 marker="o",
             )
 
         for i in range(len(self.nqubits_list) - 1):
             plt.semilogy(
-                x=self.nlayers_list,
-                y=self.frame_potential_analytical_samples_each_nqubits[i],
+                self.nlayers_list,
+                self.frame_potential_analytical_samples_each_nqubits[i],
                 linestyle="dashed",
                 color="black",
             )
         plt.semilogy(
-            x=self.nlayers_list,
-            y=self.frame_potential_analytical_samples_each_nqubits[-1],
-            label="analytical haar frame potential",
+            self.nlayers_list,
+            self.frame_potential_analytical_samples_each_nqubits[-1],
+            label="Haar",
             linestyle="dashed",
             color="black",
         )
@@ -82,9 +83,9 @@ class do_all:
             )
             expressibility_each_nqubits.append(expressibility_each_nlayers)
             plt.semilogy(
-                x=self.nlayers_list,
-                y=expressibility_each_nlayers,
-                label=f"circuit expressibility, nqubits={self.nqubits_list[i]}",
+                self.nlayers_list,
+                expressibility_each_nlayers,
+                label=f"nqubits={self.nqubits_list[i]}",
                 marker="o",
             )
 
