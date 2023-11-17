@@ -91,5 +91,6 @@ class do_all:
 
         plt.xlabel("nlayers")
         plt.ylabel("expressibility")
-        plt.legend(bbox_to_anchor=(1.02, 1), loc="upper left", borderaxespad=0, fontsize=10)
+        # plt.legend(bbox_to_anchor=(0.99, 0.99), loc="upper right", borderaxespad=0, fontsize=10)
+        plt.legend(borderaxespad=0.2, fontsize=10)
         plt.show()
