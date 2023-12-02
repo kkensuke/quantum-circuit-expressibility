@@ -1,11 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from .expressibility import (Expressibility2norm,
-                             analytical_haar_frame_potential)
+from .expressibility_qiskit import analytical_haar_frame_potential, Expressibility2norm
 
 
-class do_all:
+class do_all_qiskit:
     def __init__(self, circuit_types, nqubits_list, nlayers_list, nsamples):
         self.circuit_types = circuit_types
         self.nqubits_list = nqubits_list
@@ -45,7 +44,6 @@ class do_all:
         frame_potential_samples_each_nqubits = self.frame_potential_samples_each_circuit_type[l[circuit_type]]
 
         # plot frame potential vs nlayers
-        print(self.nlayers_list)
         for i in range(len(self.nqubits_list)):
             plt.semilogy(
                 self.nlayers_list,
