@@ -177,7 +177,7 @@ class Expressibility2norm_pennylane(GenerateCircuit_pennylane):
         samples = []
         for _ in range(self.nsamples):
             samples.append(self.random_inner_product() ** 4)
-        return np.mean(samples)
+        return np.mean(samples), np.std(samples)
 
     def expressibility(self):
         circuit_frame_potential_ = self.circuit_frame_potential()
