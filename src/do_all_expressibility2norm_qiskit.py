@@ -5,13 +5,13 @@ from .expressibility_qiskit import analytical_haar_frame_potential, Expressibili
 
 
 class do_all_qiskit:
-    def __init__(self, circuit_types, nqubits_list, nlayers_list, nsamples):
+    def __init__(self, circuit_types: list[str], nqubits_list: list[int], nlayers_list: list[int], nsamples: int):
         self.circuit_types = circuit_types
         self.nqubits_list = nqubits_list
         self.nlayers_list = nlayers_list
         self.nsamples = nsamples
 
-    def frame_potential_samples_each_circuit_type_(self):
+    def frame_potential_samples_each_circuit_type_(self) -> list[list[list[float]]]:
         self.frame_potential_samples_each_circuit_type = []
         for circuit_type in self.circuit_types:
             frame_potential_samples_each_nqubits = []
@@ -24,7 +24,7 @@ class do_all_qiskit:
             self.frame_potential_samples_each_circuit_type.append(frame_potential_samples_each_nqubits)
         return self.frame_potential_samples_each_circuit_type
 
-    def frame_potential_analytical_samples_each_nqubits_(self):
+    def frame_potential_analytical_samples_each_nqubits_(self) -> list[list[float]]:
         self.frame_potential_analytical_samples_each_nqubits = []
         for nqubits in self.nqubits_list:
             frame_potential_analytical_samples_each_nlayers = []
@@ -34,7 +34,7 @@ class do_all_qiskit:
 
         return self.frame_potential_analytical_samples_each_nqubits
 
-    def plot_all(self, circuit_type):
+    def plot_all(self, circuit_type: str) -> None:
         if circuit_type in ("TPA", "HEA", "ALT"):
             pass
         else:
