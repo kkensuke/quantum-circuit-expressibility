@@ -140,9 +140,9 @@ class Expressibility2norm(GenerateCircuit):
         super().__init__(circuit_type, nqubits, nlayers)
         self.nsamples = nsamples
 
-    def generate_circuit_state(self, params: np.ndarray) -> np.ndarray:
+    def generate_circuit_state(self, params: np.ndarray) -> qi.Statevector:
         circuit = self.generate_circuit(params)
-        state = qi.Statevector.from_instruction(circuit).data
+        state = qi.Statevector.from_instruction(circuit)
         return state
 
     def make_random_params(self) -> np.ndarray:
