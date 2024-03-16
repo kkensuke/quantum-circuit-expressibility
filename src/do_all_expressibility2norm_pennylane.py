@@ -11,7 +11,7 @@ class do_all_pennylane:
         self.nlayers_list = nlayers_list
         self.nsamples = nsamples
 
-    def frame_potential_samples_each_circuit_type_(self):
+    def frame_potential_samples_each_circuit_type_(self) -> tuple[list[list[list[float]]], list[list[list[float]]]]:
         self.frame_potential_samples_each_circuit_type_mean = []
         self.frame_potential_samples_each_circuit_type_std = []
         for circuit_type in self.circuit_types:
@@ -31,7 +31,7 @@ class do_all_pennylane:
             self.frame_potential_samples_each_circuit_type_std.append(frame_potential_samples_each_nqubits_std)
         return self.frame_potential_samples_each_circuit_type_mean, self.frame_potential_samples_each_circuit_type_std
 
-    def frame_potential_analytical_samples_each_nqubits_(self):
+    def frame_potential_analytical_samples_each_nqubits_(self) -> list[list[float]]:
         self.frame_potential_analytical_samples_each_nqubits = []
         for nqubits in self.nqubits_list:
             frame_potential_analytical_samples_each_nlayers = []
@@ -41,7 +41,7 @@ class do_all_pennylane:
 
         return self.frame_potential_analytical_samples_each_nqubits
 
-    def plot_all(self, circuit_type):
+    def plot_all(self, circuit_type) -> None:
         if circuit_type in ("TPA", "HEA", "ALT"):
             pass
         else:
